@@ -1,10 +1,9 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import CartItem from "./Components/CartItem";
-import cart from "./Cart_item";
 import { connect } from "react-redux";
 
-const CartContainer = () => {
+const CartContainer = ({ cart = [] }) => {
   if (cart.length === 0) {
     return (
       <Box component="div" sx={{ width: "90vw", margin: "40px auto" }}>
@@ -37,15 +36,14 @@ const CartContainer = () => {
         YOUR BAG
       </Typography>
       {cart.map((item, i) => {
-        return <CartItem key={i} item={item} />;
+        return <CartItem key={i} {...item} />;
       })}
     </Box>
   );
 };
 
 function mapStateToProps(state) {
-  console.log(state);
-  return { ...state };
+  return { cart: state.cart };
 }
 
 export default connect(mapStateToProps)(CartContainer);

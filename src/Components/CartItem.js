@@ -2,8 +2,16 @@ import React from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-const CartItem = ({ item }) => {
-  const { img, title, price } = item;
+import { connect } from "react-redux";
+const CartItem = ({
+  img,
+  title,
+  amount,
+  price,
+  remove,
+  increase,
+  decrease,
+}) => {
   return (
     <Box
       component="article"
@@ -22,19 +30,32 @@ const CartItem = ({ item }) => {
       <Box component="div">
         <Typography>{title}</Typography>
         <Typography>{price}</Typography>
-        <Button variant="text" sx={{ textTransform: "capitalize" }}>
+        <Button
+          variant="text"
+          s
+          onClick={() => remove()}
+          sx={{ textTransform: "capitalize" }}
+        >
           Remove
         </Button>
       </Box>
       <Box component="div">
         <Typography sx={{ margin: "0px" }}>
-          <IconButton color="primary" aria-label="add to shopping cart">
+          <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            onClick={() => increase()}
+          >
             <KeyboardArrowUpIcon />
           </IconButton>
         </Typography>
         <Typography>
-          <Typography sx={{ textAlign: "center" }}>{0}</Typography>
-          <IconButton color="primary" aria-label="add to shopping cart">
+          <Typography sx={{ textAlign: "center" }}>{amount}</Typography>
+          <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            onClick={() => decrease()}
+          >
             <KeyboardArrowDownIcon />
           </IconButton>
         </Typography>
@@ -43,4 +64,13 @@ const CartItem = ({ item }) => {
   );
 };
 
-export default CartItem;
+function mapDispatchToProps(dispatch, ownProps) {
+  const { id, amount } = ownProps;
+  return {
+    remove: () => dispatch({ type: "REMOVE", payload: { id } }),
+    increase: () => dispatch({ type: "INCREASE", payload: { id } }),
+    decrease: () => dispatch({ type: "DECREASE", payload: { id,amount } }),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(CartItem);

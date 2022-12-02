@@ -23,6 +23,7 @@ function App() {
     amount: 1,
   };
 
+
   const store = createStore(reducer, initialState);
 
   return (
